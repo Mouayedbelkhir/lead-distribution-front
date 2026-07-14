@@ -1,0 +1,2 @@
+export const SET_CURRENT_USER = "auth/SET_CURRENT_USER";
+export const CLEAR_CURRENT_USER = "auth/CLEAR_CURRENT_USER";

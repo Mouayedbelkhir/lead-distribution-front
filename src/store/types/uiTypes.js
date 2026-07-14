@@ -1,0 +1,2 @@
+export const TOGGLE_SIDEBAR = "ui/TOGGLE_SIDEBAR";
+export const SET_SIDEBAR_STATE = "ui/SET_SIDEBAR_STATE";
