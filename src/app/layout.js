@@ -2,6 +2,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./globals.css";
+import "@/styles/index.css";
+
 import { ToastProvider } from "@/providers/toast-provider";
 import { QueryProvider } from "@/providers/query-provider";
 import { ReduxProvider } from "@/providers/redux-provider";

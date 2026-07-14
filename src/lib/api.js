@@ -1,6 +1,7 @@
 import axios from "axios";
-
-export const TOKEN_KEY = "token";
+import { getToken, clearAuth } from "./auth";
+import { store } from "@/store/store";
+import { clearCurrentUser } from "@/store/actions/authActions";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -11,7 +12,7 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
-    const token = localStorage.getItem(TOKEN_KEY);
+    const token = getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -23,10 +24,8 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401 && typeof window !== "undefined") {
-      localStorage.removeItem(TOKEN_KEY);
-      if (window.location.pathname !== "/login") {
-        window.location.href = "/login";
-      }
+      clearAuth();
+      store.dispatch(clearCurrentUser());
     }
     return Promise.reject(error);
   }
