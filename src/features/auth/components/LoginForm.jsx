@@ -3,10 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail, Lock, LogIn, Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
-import { loginSchema } from "@/features/auth/schemas/loginSchema";
+import { loginFormDefaults } from "@/features/auth/schemas/loginSchema";
 import { login as loginApi } from "@/features/auth/services/authService";
 import { setAuth } from "@/lib/auth";
 import { useAppDispatch } from "@/store/hooks";
@@ -22,8 +21,7 @@ export function LoginForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: loginFormDefaults,
   });
 
   const onSubmit = async (values) => {
@@ -53,7 +51,13 @@ export function LoginForm() {
             className={`form-control auth-input ${errors.email ? "is-invalid" : ""}`}
             placeholder="you@company.com"
             autoComplete="email"
-            {...register("email")}
+            {...register("email", {
+              required: "Enter a valid email address",
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: "Enter a valid email address",
+              },
+            })}
           />
         </div>
         {errors.email && (
@@ -73,7 +77,10 @@ export function LoginForm() {
             className={`form-control auth-input ${errors.password ? "is-invalid" : ""}`}
             placeholder="Enter your password"
             autoComplete="current-password"
-            {...register("password")}
+            {...register("password", {
+              required: "Password must be at least 6 characters",
+              minLength: { value: 6, message: "Password must be at least 6 characters" },
+            })}
           />
           <button
             type="button"

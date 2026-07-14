@@ -1,3 +1,11 @@
 @import "./auth.css";
-@import "./dashboard.css";
-@import "./sidebar.css";
+@import "./components/Card.css";
+@import "./components/StatCard.css";
+@import "./components/Table.css";
+@import "./components/Modal.css";
+@import "./components/Form.css";
+@import "./components/ConfirmDialog.css";
+@import "@/components/client/styles/sidebar.css";
+@import "@/components/client/styles/navbar.css";
+@import "@/features/dashboard/styles/dashboard.css";
+@import "@/features/clients/styles/clients.css";
