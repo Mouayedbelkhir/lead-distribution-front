@@ -12,3 +12,9 @@ export const verticalKeys = {
   lists: ["verticals", "list"],
   detail: (id) => ["verticals", "detail", id],
 };
+
+export const deliveryKeys = {
+  all: ["deliveries"],
+  lists: ["deliveries", "list"],
+  detail: (id) => ["deliveries", "detail", id],
+};
