@@ -41,14 +41,6 @@ export function isTokenExpired(token) {
   }
 }
 
-export function decodeToken(token) {
-  try {
-    return jwtDecode(token);
-  } catch {
-    return null;
-  }
-}
-
 export function hydrateAuth() {
   if (typeof window === "undefined") return null;
   const token = getToken();
@@ -58,15 +50,16 @@ export function hydrateAuth() {
   }
   const user = getStoredUser();
   if (!user) {
-    const decoded = decodeToken(token);
-    if (decoded) {
+    try {
+      const decoded = jwtDecode(token);
       return {
         token,
         user: { id: decoded.userId, email: "", role: decoded.role },
       };
+    } catch {
+      clearAuth();
+      return null;
     }
-    clearAuth();
-    return null;
   }
   return { token, user };
 }

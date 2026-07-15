@@ -23,7 +23,8 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && typeof window !== "undefined") {
+    const status = error.response?.status;
+    if (typeof window !== "undefined" && (status === 401 || status === 403)) {
       clearAuth();
       store.dispatch(clearCurrentUser());
     }
