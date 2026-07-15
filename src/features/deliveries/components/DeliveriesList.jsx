@@ -3,9 +3,6 @@
 import { useState, useMemo } from "react";
 import {
   Plus,
-  Search,
-  Pencil,
-  Trash2,
   Truck,
   Clock,
   MapPin,
@@ -13,12 +10,11 @@ import {
 import { useDeliveries, useDeleteDelivery } from "@/features/deliveries/hooks/useDeliveries";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { ROLES } from "@/constants/roles";
-import { Loader } from "@/components/server/Loader";
-import { ErrorState } from "@/components/server/ErrorState";
-import { EmptyState } from "@/components/server/EmptyState";
+import {
+  PageHeader, Button, SearchInput, Card, CardHeader, CardBody,
+  LoadingSpinner, ErrorState, EmptyState, ActionButtons, ConfirmDialog,
+} from "@/components/ui";
 import { DeliveryFormModal } from "@/features/deliveries/components/DeliveryFormModal";
-import { ConfirmDialog } from "@/components/client/ConfirmDialog";
-import { formatDate } from "@/utils/format";
 import toast from "react-hot-toast";
 
 export function DeliveriesList() {
@@ -53,10 +49,6 @@ export function DeliveriesList() {
     setModalOpen(true);
   };
 
-  const handleDelete = (delivery) => {
-    setDeleteTarget(delivery);
-  };
-
   const confirmDelete = async () => {
     if (!deleteTarget) return;
     try {
@@ -68,51 +60,28 @@ export function DeliveriesList() {
     }
   };
 
-  if (isLoading) return <Loader label="Loading deliveries..." />;
-  if (isError) {
-    return (
-      <>
-        <ErrorState message="Failed to load deliveries." />
-        <div className="text-center mt-3">
-          <button className="btn btn-outline-primary btn-sm" onClick={() => refetch()}>
-            Retry
-          </button>
-        </div>
-      </>
-    );
-  }
+  if (isLoading) return <LoadingSpinner label="Loading deliveries..." />;
+  if (isError) return <ErrorState message="Failed to load deliveries." onRetry={() => refetch()} />;
 
   return (
     <>
-      <div className="page-header">
-        <div>
-          <h1 className="page-title">Deliveries</h1>
-          <p className="page-description">Manage lead delivery configurations</p>
-        </div>
-        {isAdmin && (
-          <button className="btn btn-primary btn-sm" onClick={handleOpenCreate}>
-            <Plus size={16} className="me-1" />
-            Add Delivery
-          </button>
-        )}
-      </div>
+      <PageHeader
+        title="Deliveries"
+        description="Manage lead delivery configurations"
+        action={isAdmin && <Button icon={Plus} size="sm" onClick={handleOpenCreate}>Add Delivery</Button>}
+      />
 
-      <div className="card-custom">
-        <div className="card-custom-header">
-          <div className="search-wrap">
-            <Search size={16} className="search-icon" />
-            <input
-              type="text"
-              className="form-control search-input"
-              placeholder="Search by client or vertical..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className="card-custom-body p-0">
+      <Card>
+        <CardHeader>
+          <SearchInput value={search} onChange={setSearch} placeholder="Search by client or vertical..." />
+        </CardHeader>
+        <CardBody className="p-0">
           {filtered.length === 0 ? (
-            <EmptyState message={search ? "No deliveries match your search." : "No deliveries yet."} />
+            <EmptyState
+              icon={Truck}
+              title={search ? "No deliveries match your search" : "No deliveries yet"}
+              description={search ? "Try a different search term." : "Get started by adding your first delivery."}
+            />
           ) : (
             <div className="table-responsive">
               <table className="table data-table mb-0">
@@ -135,13 +104,13 @@ export function DeliveriesList() {
                       <td>
                         <div className="cell-with-icon">
                           <Truck size={16} className="text-muted" />
-                          <span className="fw-medium">{delivery.client?.name || "—"}</span>
+                          <span className="fw-medium">{delivery.client?.name || "\u2014"}</span>
                         </div>
                       </td>
-                      <td>{delivery.vertical?.name || "—"}</td>
-                      <td>{delivery.minAge}–{delivery.maxAge}</td>
+                      <td>{delivery.vertical?.name || "\u2014"}</td>
+                      <td>{delivery.minAge}&ndash;{delivery.maxAge}</td>
                       <td>{delivery.capacity}</td>
-                      <td>{Number(delivery.price).toFixed(2)} €</td>
+                      <td>{Number(delivery.price).toFixed(2)} &euro;</td>
                       <td>
                         <div className="badge-list">
                           {delivery.postalCodes?.map((p, i) => (
@@ -157,7 +126,7 @@ export function DeliveriesList() {
                           {delivery.timeSlots?.map((t, i) => (
                             <span key={i} className="badge-item badge-item-time">
                               <Clock size={11} />
-                              {t.startTime}–{t.endTime}
+                              {t.startTime}&ndash;{t.endTime}
                             </span>
                           ))}
                         </div>
@@ -165,23 +134,11 @@ export function DeliveriesList() {
                       <td>{delivery.leadsCount ?? 0}</td>
                       {isAdmin && (
                         <td>
-                          <div className="table-actions">
-                            <button
-                              className="btn-icon"
-                              onClick={() => handleOpenEdit(delivery)}
-                              title="Edit"
-                            >
-                              <Pencil size={16} />
-                            </button>
-                            <button
-                              className="btn-icon danger"
-                              onClick={() => handleDelete(delivery)}
-                              title="Delete"
-                              disabled={deleteDelivery.isPending}
-                            >
-                              <Trash2 size={16} />
-                            </button>
-                          </div>
+                          <ActionButtons
+                            onEdit={() => handleOpenEdit(delivery)}
+                            onDelete={() => setDeleteTarget(delivery)}
+                            deleteDisabled={deleteDelivery.isPending}
+                          />
                         </td>
                       )}
                     </tr>
@@ -190,8 +147,8 @@ export function DeliveriesList() {
               </table>
             </div>
           )}
-        </div>
-      </div>
+        </CardBody>
+      </Card>
 
       {modalOpen && (
         <DeliveryFormModal

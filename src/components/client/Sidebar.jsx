@@ -82,7 +82,7 @@ export function Sidebar() {
         </nav>
 
         <div className="sidebar-footer">
-          <button className="sidebar-collapse-btn" onClick={handleToggle}>
+          <button className="sidebar-collapse-btn" onClick={handleToggle} aria-label="Toggle sidebar">
             <ChevronLeft size={18} className="chevron-icon" />
             <span className="sidebar-link-text">Collapse</span>
           </button>

@@ -4,7 +4,7 @@ import { Plus, Trash2 } from "lucide-react";
 
 export function TimeSlotFields({ fields, register, append, remove, errors }) {
   return (
-    <div className="auth-field">
+    <div className="form-field">
       <label className="form-label">Time Slots <span className="text-danger">*</span></label>
       {fields.map((field, index) => (
         <div key={field.id} className="dynamic-field-row dynamic-field-row-wide">

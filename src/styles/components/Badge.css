@@ -1,0 +1,41 @@
+/* ── Badge ── */
+.badge-ui {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.1875rem 0.625rem;
+  border-radius: var(--radius-full);
+  font-size: var(--font-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-ui-default {
+  background: var(--surface-hover);
+  color: var(--text-muted);
+}
+
+.badge-ui-success {
+  background: var(--success-light);
+  color: var(--success-dark);
+}
+
+.badge-ui-warning {
+  background: var(--warning-light);
+  color: var(--warning-dark);
+}
+
+.badge-ui-danger {
+  background: var(--danger-light);
+  color: var(--danger-dark);
+}
+
+.badge-ui-info {
+  background: var(--info-light);
+  color: var(--info-dark);
+}
+
+.badge-ui-primary {
+  background: var(--primary-light);
+  color: var(--primary);
+}

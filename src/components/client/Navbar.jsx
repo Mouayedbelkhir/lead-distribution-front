@@ -40,6 +40,7 @@ export function Navbar() {
         <button
           className="navbar-toggle d-lg-none"
           onClick={() => dispatch(toggleSidebar())}
+          aria-label="Open sidebar"
         >
           <Menu size={22} />
         </button>
@@ -54,7 +55,7 @@ export function Navbar() {
             <span className={`role-badge ${getRoleClass(user?.role)}`}>{user?.role}</span>
           </div>
         </div>
-        <button className="navbar-logout" onClick={logout}>
+        <button className="navbar-logout" onClick={logout} aria-label="Logout">
           <LogOut size={16} />
           <span className="d-none d-sm-inline">Logout</span>
         </button>

@@ -1,10 +1,11 @@
+/* ── Stat Card ── */
 .stat-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
   box-shadow: var(--shadow);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform var(--transition), box-shadow var(--transition);
 }
 
 .stat-card:hover {
@@ -16,57 +17,58 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 0.875rem;
 }
 
 .stat-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 0.625rem;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .stat-icon.indigo {
-  background: rgba(79, 70, 229, 0.1);
-  color: #4f46e5;
+  background: var(--primary-light);
+  color: var(--primary);
 }
 
 .stat-icon.green {
-  background: rgba(16, 185, 129, 0.1);
-  color: #059669;
+  background: var(--success-light);
+  color: var(--success-dark);
 }
 
 .stat-icon.amber {
-  background: rgba(245, 158, 11, 0.1);
-  color: #d97706;
+  background: var(--warning-light);
+  color: var(--warning-dark);
 }
 
 .stat-icon.blue {
-  background: rgba(59, 130, 246, 0.1);
-  color: #2563eb;
+  background: var(--info-light);
+  color: var(--info-dark);
 }
 
 .stat-value {
-  font-size: 1.75rem;
+  font-size: 1.625rem;
   font-weight: 700;
   color: var(--text);
   line-height: 1.2;
 }
 
 .stat-label {
-  font-size: 0.8125rem;
+  font-size: var(--font-sm);
   color: var(--text-muted);
   margin-top: 0.25rem;
 }
 
 .stat-subtitle {
-  font-size: 0.75rem;
-  color: var(--text-muted);
+  font-size: var(--font-xs);
+  color: var(--text-light);
   margin-top: 0.25rem;
 }
 
+/* ── Metrics List ── */
 .metrics-list {
   display: flex;
   flex-direction: column;
@@ -82,7 +84,7 @@
 .metric-icon {
   width: 40px;
   height: 40px;
-  border-radius: 0.5rem;
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,23 +92,23 @@
 }
 
 .metric-icon.indigo {
-  background: rgba(79, 70, 229, 0.1);
-  color: #4f46e5;
+  background: var(--primary-light);
+  color: var(--primary);
 }
 
 .metric-icon.green {
-  background: rgba(16, 185, 129, 0.1);
-  color: #059669;
+  background: var(--success-light);
+  color: var(--success-dark);
 }
 
 .metric-icon.amber {
-  background: rgba(245, 158, 11, 0.1);
-  color: #d97706;
+  background: var(--warning-light);
+  color: var(--warning-dark);
 }
 
 .metric-icon.blue {
-  background: rgba(59, 130, 246, 0.1);
-  color: #2563eb;
+  background: var(--info-light);
+  color: var(--info-dark);
 }
 
 .metric-info {
@@ -116,12 +118,12 @@
 }
 
 .metric-label {
-  font-size: 0.8125rem;
+  font-size: var(--font-sm);
   color: var(--text-muted);
 }
 
 .metric-value {
-  font-size: 1.125rem;
+  font-size: var(--font-xl);
   font-weight: 700;
   color: var(--text);
 }

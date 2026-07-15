@@ -1,8 +1,8 @@
 "use client";
 
 import { useForm, useFieldArray } from "react-hook-form";
-import { X } from "lucide-react";
 import toast from "react-hot-toast";
+import { Modal, Button } from "@/components/ui";
 import { deliveryFormDefaults } from "@/features/deliveries/schemas/deliverySchema";
 import { useCreateDelivery, useUpdateDelivery } from "@/features/deliveries/hooks/useDeliveries";
 import { useClients } from "@/features/clients/hooks/useClients";
@@ -79,182 +79,168 @@ export function DeliveryFormModal({ delivery, onClose }) {
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-dialog-custom modal-dialog-wide" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header-custom">
-          <h3 className="modal-title-custom">
-            {isEdit ? "Edit Delivery" : "Add Delivery"}
-          </h3>
-          <button className="modal-close-btn" onClick={onClose}>
-            <X size={20} />
-          </button>
-        </div>
-
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className="modal-body-custom">
-            <div className="form-row-two">
-              <div className="auth-field">
-                <label className="form-label" htmlFor="clientId">
-                  Client <span className="text-danger">*</span>
-                </label>
-                <select
-                  id="clientId"
-                  className={`form-select ${errors.clientId ? "is-invalid" : ""}`}
-                  {...register("clientId", { required: "Client is required" })}
-                >
-                  <option value="">Select a client</option>
-                  {clients?.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}{c.company ? ` — ${c.company}` : ""}
-                    </option>
-                  ))}
-                </select>
-                {errors.clientId && (
-                  <div className="invalid-feedback d-block">{errors.clientId.message}</div>
-                )}
-              </div>
-
-              <div className="auth-field">
-                <label className="form-label" htmlFor="verticalId">
-                  Vertical <span className="text-danger">*</span>
-                </label>
-                <select
-                  id="verticalId"
-                  className={`form-select ${errors.verticalId ? "is-invalid" : ""}`}
-                  {...register("verticalId", { required: "Vertical is required" })}
-                >
-                  <option value="">Select a vertical</option>
-                  {verticals?.map((v) => (
-                    <option key={v.id} value={v.id}>
-                      {v.name}
-                    </option>
-                  ))}
-                </select>
-                {errors.verticalId && (
-                  <div className="invalid-feedback d-block">{errors.verticalId.message}</div>
-                )}
-              </div>
-            </div>
-
-            <div className="form-row-two">
-              <div className="auth-field">
-                <label className="form-label" htmlFor="minAge">
-                  Min Age <span className="text-danger">*</span>
-                </label>
-                <input
-                  id="minAge"
-                  type="number"
-                  min="0"
-                  className={`form-control ${errors.minAge ? "is-invalid" : ""}`}
-                  {...register("minAge", {
-                    required: "Min age is required",
-                    min: { value: 0, message: "Must be 0 or greater" },
-                    valueAsNumber: true,
-                  })}
-                />
-                {errors.minAge && (
-                  <div className="invalid-feedback d-block">{errors.minAge.message}</div>
-                )}
-              </div>
-
-              <div className="auth-field">
-                <label className="form-label" htmlFor="maxAge">
-                  Max Age <span className="text-danger">*</span>
-                </label>
-                <input
-                  id="maxAge"
-                  type="number"
-                  min="0"
-                  className={`form-control ${errors.maxAge ? "is-invalid" : ""}`}
-                  {...register("maxAge", {
-                    required: "Max age is required",
-                    min: { value: 0, message: "Must be 0 or greater" },
-                    valueAsNumber: true,
-                  })}
-                />
-                {errors.maxAge && (
-                  <div className="invalid-feedback d-block">{errors.maxAge.message}</div>
-                )}
-              </div>
-            </div>
-
-            <div className="form-row-two">
-              <div className="auth-field">
-                <label className="form-label" htmlFor="capacity">
-                  Capacity <span className="text-danger">*</span>
-                </label>
-                <input
-                  id="capacity"
-                  type="number"
-                  min="1"
-                  className={`form-control ${errors.capacity ? "is-invalid" : ""}`}
-                  {...register("capacity", {
-                    required: "Capacity is required",
-                    min: { value: 1, message: "Must be at least 1" },
-                    valueAsNumber: true,
-                  })}
-                />
-                {errors.capacity && (
-                  <div className="invalid-feedback d-block">{errors.capacity.message}</div>
-                )}
-              </div>
-
-              <div className="auth-field">
-                <label className="form-label" htmlFor="price">
-                  Price (€) <span className="text-danger">*</span>
-                </label>
-                <input
-                  id="price"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  className={`form-control ${errors.price ? "is-invalid" : ""}`}
-                  {...register("price", {
-                    required: "Price is required",
-                    min: { value: 0.01, message: "Must be greater than 0" },
-                    valueAsNumber: true,
-                  })}
-                />
-                {errors.price && (
-                  <div className="invalid-feedback d-block">{errors.price.message}</div>
-                )}
-              </div>
-            </div>
-
-            <PostalCodeFields
-              fields={postalCodeFields}
-              register={register}
-              append={appendPostalCode}
-              remove={removePostalCode}
-              errors={errors.postalCodes}
-            />
-
-            <TimeSlotFields
-              fields={timeSlotFields}
-              register={register}
-              append={appendTimeSlot}
-              remove={removeTimeSlot}
-              errors={errors.timeSlots}
-            />
-          </div>
-
-          <div className="modal-footer-custom">
-            <button type="button" className="btn btn-outline-secondary" onClick={onClose}>
-              Cancel
-            </button>
-            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <span className="spinner-border spinner-border-sm me-2" />
-                  Saving...
-                </>
-              ) : (
-                isEdit ? "Save Changes" : "Create Delivery"
+    <Modal
+      open
+      onClose={onClose}
+      title={isEdit ? "Edit Delivery" : "Add Delivery"}
+      size="wide"
+      footer={
+        <>
+          <Button variant="outline-secondary" onClick={onClose}>Cancel</Button>
+          <Button variant="primary" type="submit" form="delivery-form" loading={isSubmitting} disabled={isSubmitting}>
+            {isEdit ? "Save Changes" : "Create Delivery"}
+          </Button>
+        </>
+      }
+    >
+      <form id="delivery-form" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <div className="modal-body-custom">
+          <div className="form-row-two">
+            <div className="form-field">
+              <label className="form-label" htmlFor="clientId">
+                Client <span className="text-danger">*</span>
+              </label>
+              <select
+                id="clientId"
+                className={`form-select ${errors.clientId ? "is-invalid" : ""}`}
+                {...register("clientId", { required: "Client is required" })}
+              >
+                <option value="">Select a client</option>
+                {clients?.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}{c.company ? ` \u2014 ${c.company}` : ""}
+                  </option>
+                ))}
+              </select>
+              {errors.clientId && (
+                <div className="invalid-feedback d-block">{errors.clientId.message}</div>
               )}
-            </button>
+            </div>
+
+            <div className="form-field">
+              <label className="form-label" htmlFor="verticalId">
+                Vertical <span className="text-danger">*</span>
+              </label>
+              <select
+                id="verticalId"
+                className={`form-select ${errors.verticalId ? "is-invalid" : ""}`}
+                {...register("verticalId", { required: "Vertical is required" })}
+              >
+                <option value="">Select a vertical</option>
+                {verticals?.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.name}
+                  </option>
+                ))}
+              </select>
+              {errors.verticalId && (
+                <div className="invalid-feedback d-block">{errors.verticalId.message}</div>
+              )}
+            </div>
           </div>
-        </form>
-      </div>
-    </div>
+
+          <div className="form-row-two">
+            <div className="form-field">
+              <label className="form-label" htmlFor="minAge">
+                Min Age <span className="text-danger">*</span>
+              </label>
+              <input
+                id="minAge"
+                type="number"
+                min="0"
+                className={`form-control ${errors.minAge ? "is-invalid" : ""}`}
+                {...register("minAge", {
+                  required: "Min age is required",
+                  min: { value: 0, message: "Must be 0 or greater" },
+                  valueAsNumber: true,
+                })}
+              />
+              {errors.minAge && (
+                <div className="invalid-feedback d-block">{errors.minAge.message}</div>
+              )}
+            </div>
+
+            <div className="form-field">
+              <label className="form-label" htmlFor="maxAge">
+                Max Age <span className="text-danger">*</span>
+              </label>
+              <input
+                id="maxAge"
+                type="number"
+                min="0"
+                className={`form-control ${errors.maxAge ? "is-invalid" : ""}`}
+                {...register("maxAge", {
+                  required: "Max age is required",
+                  min: { value: 0, message: "Must be 0 or greater" },
+                  valueAsNumber: true,
+                })}
+              />
+              {errors.maxAge && (
+                <div className="invalid-feedback d-block">{errors.maxAge.message}</div>
+              )}
+            </div>
+          </div>
+
+          <div className="form-row-two">
+            <div className="form-field">
+              <label className="form-label" htmlFor="capacity">
+                Capacity <span className="text-danger">*</span>
+              </label>
+              <input
+                id="capacity"
+                type="number"
+                min="1"
+                className={`form-control ${errors.capacity ? "is-invalid" : ""}`}
+                {...register("capacity", {
+                  required: "Capacity is required",
+                  min: { value: 1, message: "Must be at least 1" },
+                  valueAsNumber: true,
+                })}
+              />
+              {errors.capacity && (
+                <div className="invalid-feedback d-block">{errors.capacity.message}</div>
+              )}
+            </div>
+
+            <div className="form-field">
+              <label className="form-label" htmlFor="price">
+                Price (&euro;) <span className="text-danger">*</span>
+              </label>
+              <input
+                id="price"
+                type="number"
+                step="0.01"
+                min="0"
+                className={`form-control ${errors.price ? "is-invalid" : ""}`}
+                {...register("price", {
+                  required: "Price is required",
+                  min: { value: 0.01, message: "Must be greater than 0" },
+                  valueAsNumber: true,
+                })}
+              />
+              {errors.price && (
+                <div className="invalid-feedback d-block">{errors.price.message}</div>
+              )}
+            </div>
+          </div>
+
+          <PostalCodeFields
+            fields={postalCodeFields}
+            register={register}
+            append={appendPostalCode}
+            remove={removePostalCode}
+            errors={errors.postalCodes}
+          />
+
+          <TimeSlotFields
+            fields={timeSlotFields}
+            register={register}
+            append={appendTimeSlot}
+            remove={removeTimeSlot}
+            errors={errors.timeSlots}
+          />
+        </div>
+      </form>
+    </Modal>
   );
 }

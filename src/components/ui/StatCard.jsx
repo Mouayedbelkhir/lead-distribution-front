@@ -1,3 +1,5 @@
+"use client";
+
 export function StatCard({ icon: Icon, title, value, subtitle, color = "indigo" }) {
   return (
     <div className="stat-card">

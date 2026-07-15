@@ -10,7 +10,7 @@ import {
   CalendarCheck,
   Euro,
 } from "lucide-react";
-import { StatCard } from "@/components/server/StatCard";
+import { StatCard } from "@/components/ui";
 import { formatCurrency } from "@/utils/format";
 
 export function StatsGrid({ data }) {

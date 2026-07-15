@@ -1,21 +1,15 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import {
-  Plus,
-  Search,
-  Pencil,
-  Trash2,
-  Layers,
-} from "lucide-react";
+import { Plus, Layers, Target } from "lucide-react";
 import { useVerticals, useDeleteVertical } from "@/features/verticals/hooks/useVerticals";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { ROLES } from "@/constants/roles";
-import { Loader } from "@/components/server/Loader";
-import { ErrorState } from "@/components/server/ErrorState";
-import { EmptyState } from "@/components/server/EmptyState";
+import {
+  PageHeader, Button, SearchInput, Card, CardHeader, CardBody,
+  LoadingSpinner, ErrorState, EmptyState, ActionButtons, ConfirmDialog,
+} from "@/components/ui";
 import { VerticalFormModal } from "@/features/verticals/components/VerticalFormModal";
-import { ConfirmDialog } from "@/components/client/ConfirmDialog";
 import { formatDate } from "@/utils/format";
 import toast from "react-hot-toast";
 
@@ -47,10 +41,6 @@ export function VerticalsList() {
     setModalOpen(true);
   };
 
-  const handleDelete = (vertical) => {
-    setDeleteTarget(vertical);
-  };
-
   const confirmDelete = async () => {
     if (!deleteTarget) return;
     try {
@@ -62,51 +52,28 @@ export function VerticalsList() {
     }
   };
 
-  if (isLoading) return <Loader label="Loading verticals..." />;
-  if (isError) {
-    return (
-      <>
-        <ErrorState message="Failed to load verticals." />
-        <div className="text-center mt-3">
-          <button className="btn btn-outline-primary btn-sm" onClick={() => refetch()}>
-            Retry
-          </button>
-        </div>
-      </>
-    );
-  }
+  if (isLoading) return <LoadingSpinner label="Loading verticals..." />;
+  if (isError) return <ErrorState message="Failed to load verticals." onRetry={() => refetch()} />;
 
   return (
     <>
-      <div className="page-header">
-        <div>
-          <h1 className="page-title">Verticals</h1>
-          <p className="page-description">Manage business verticals</p>
-        </div>
-        {isAdmin && (
-          <button className="btn btn-primary btn-sm" onClick={handleOpenCreate}>
-            <Plus size={16} className="me-1" />
-            Add Vertical
-          </button>
-        )}
-      </div>
+      <PageHeader
+        title="Verticals"
+        description="Manage business verticals"
+        action={isAdmin && <Button icon={Plus} size="sm" onClick={handleOpenCreate}>Add Vertical</Button>}
+      />
 
-      <div className="card-custom">
-        <div className="card-custom-header">
-          <div className="search-wrap">
-            <Search size={16} className="search-icon" />
-            <input
-              type="text"
-              className="form-control search-input"
-              placeholder="Search by name..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className="card-custom-body p-0">
+      <Card>
+        <CardHeader>
+          <SearchInput value={search} onChange={setSearch} placeholder="Search by name..." />
+        </CardHeader>
+        <CardBody className="p-0">
           {filtered.length === 0 ? (
-            <EmptyState message={search ? "No verticals match your search." : "No verticals yet."} />
+            <EmptyState
+              icon={Target}
+              title={search ? "No verticals match your search" : "No verticals yet"}
+              description={search ? "Try a different search term." : "Get started by adding your first vertical."}
+            />
           ) : (
             <div className="table-responsive">
               <table className="table data-table mb-0">
@@ -131,23 +98,11 @@ export function VerticalsList() {
                       <td>{formatDate(vertical.createdAt)}</td>
                       {isAdmin && (
                         <td>
-                          <div className="table-actions">
-                            <button
-                              className="btn-icon"
-                              onClick={() => handleOpenEdit(vertical)}
-                              title="Edit"
-                            >
-                              <Pencil size={16} />
-                            </button>
-                            <button
-                              className="btn-icon danger"
-                              onClick={() => handleDelete(vertical)}
-                              title="Delete"
-                              disabled={deleteVertical.isPending}
-                            >
-                              <Trash2 size={16} />
-                            </button>
-                          </div>
+                          <ActionButtons
+                            onEdit={() => handleOpenEdit(vertical)}
+                            onDelete={() => setDeleteTarget(vertical)}
+                            deleteDisabled={deleteVertical.isPending}
+                          />
                         </td>
                       )}
                     </tr>
@@ -156,8 +111,8 @@ export function VerticalsList() {
               </table>
             </div>
           )}
-        </div>
-      </div>
+        </CardBody>
+      </Card>
 
       {modalOpen && (
         <VerticalFormModal

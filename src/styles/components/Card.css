@@ -1,22 +1,30 @@
+/* ── Card ── */
 .card-custom {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   overflow: hidden;
   height: 100%;
+  transition: box-shadow var(--transition);
+}
+
+.card-custom:hover {
+  box-shadow: var(--shadow-md);
 }
 
 .card-custom-header {
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .card-custom-title {
-  font-size: 1rem;
+  font-size: var(--font-lg);
   font-weight: 600;
   color: var(--text);
   margin: 0;
@@ -26,22 +34,33 @@
   padding: 1.5rem;
 }
 
+/* ── Page Header ── */
 .page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.75rem;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .page-title {
-  font-size: 1.5rem;
+  font-size: var(--font-3xl);
   font-weight: 700;
   color: var(--text);
   margin: 0;
+  line-height: 1.2;
 }
 
 .page-description {
-  font-size: 0.875rem;
+  font-size: var(--font-base);
   color: var(--text-muted);
   margin-top: 0.25rem;
+}
+
+@media (max-width: 576px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

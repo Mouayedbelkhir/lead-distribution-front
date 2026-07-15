@@ -4,8 +4,7 @@ import { TrendingUp, Gauge, Euro } from "lucide-react";
 import { useDashboardStats } from "@/features/dashboard/hooks/useDashboardStats";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { StatsGrid } from "@/features/dashboard/components/StatsGrid";
-import { Loader } from "@/components/server/Loader";
-import { ErrorState } from "@/components/server/ErrorState";
+import { PageHeader, LoadingSpinner, ErrorState, Card, CardHeader, CardTitle, CardBody } from "@/components/ui";
 import { formatCurrency } from "@/utils/format";
 
 function MetricRow({ icon: Icon, label, value, color }) {
@@ -26,20 +25,14 @@ export function DashboardOverview() {
   const { user } = useAuth();
   const { data, isLoading, isError, refetch } = useDashboardStats();
 
+  const welcomeTitle = `Welcome back${user?.email ? `, ${user.email.split("@")[0]}` : ""}`;
+  const welcomeDesc = "Here\u2019s what\u2019s happening with your lead distribution today.";
+
   if (isLoading) {
     return (
       <>
-        <div className="page-header">
-          <div>
-            <h1 className="page-title">
-              Welcome back{user?.email ? `, ${user.email.split("@")[0]}` : ""}
-            </h1>
-            <p className="page-description">
-              Here&apos;s what&apos;s happening with your lead distribution today.
-            </p>
-          </div>
-        </div>
-        <Loader label="Loading dashboard statistics..." />
+        <PageHeader title={welcomeTitle} description={welcomeDesc} />
+        <LoadingSpinner label="Loading dashboard statistics..." />
       </>
     );
   }
@@ -47,22 +40,8 @@ export function DashboardOverview() {
   if (isError) {
     return (
       <>
-        <div className="page-header">
-          <div>
-            <h1 className="page-title">
-              Welcome back{user?.email ? `, ${user.email.split("@")[0]}` : ""}
-            </h1>
-            <p className="page-description">
-              Here&apos;s what&apos;s happening with your lead distribution today.
-            </p>
-          </div>
-        </div>
-        <ErrorState message="Failed to load dashboard statistics." />
-        <div className="text-center mt-3">
-          <button className="btn btn-outline-primary btn-sm" onClick={() => refetch()}>
-            Retry
-          </button>
-        </div>
+        <PageHeader title={welcomeTitle} description={welcomeDesc} />
+        <ErrorState message="Failed to load dashboard statistics." onRetry={() => refetch()} />
       </>
     );
   }
@@ -71,27 +50,18 @@ export function DashboardOverview() {
 
   return (
     <>
-      <div className="page-header">
-        <div>
-          <h1 className="page-title">
-            Welcome back{user?.email ? `, ${user.email.split("@")[0]}` : ""}
-          </h1>
-          <p className="page-description">
-            Here&apos;s what&apos;s happening with your lead distribution today.
-          </p>
-        </div>
-      </div>
+      <PageHeader title={welcomeTitle} description={welcomeDesc} />
 
       <StatsGrid data={stats} />
 
       <div className="row g-3">
         <div className="col-12 col-lg-8">
-          <div className="card-custom">
-            <div className="card-custom-header">
-              <h3 className="card-custom-title">Distribution Metrics</h3>
+          <Card>
+            <CardHeader>
+              <CardTitle>Distribution Metrics</CardTitle>
               <TrendingUp size={18} className="text-muted" />
-            </div>
-            <div className="card-custom-body">
+            </CardHeader>
+            <CardBody>
               <div className="metrics-list">
                 <MetricRow
                   icon={Gauge}
@@ -112,16 +82,16 @@ export function DashboardOverview() {
                   color="blue"
                 />
               </div>
-            </div>
-          </div>
+            </CardBody>
+          </Card>
         </div>
 
         <div className="col-12 col-lg-4">
-          <div className="card-custom">
-            <div className="card-custom-header">
-              <h3 className="card-custom-title">Capacity</h3>
-            </div>
-            <div className="card-custom-body">
+          <Card>
+            <CardHeader>
+              <CardTitle>Capacity</CardTitle>
+            </CardHeader>
+            <CardBody>
               <div className="metrics-list">
                 <MetricRow
                   icon={TrendingUp}
@@ -136,8 +106,8 @@ export function DashboardOverview() {
                   color="amber"
                 />
               </div>
-            </div>
-          </div>
+            </CardBody>
+          </Card>
         </div>
       </div>
     </>
