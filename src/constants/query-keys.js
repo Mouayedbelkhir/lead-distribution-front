@@ -18,3 +18,9 @@ export const deliveryKeys = {
   lists: ["deliveries", "list"],
   detail: (id) => ["deliveries", "detail", id],
 };
+
+export const leadKeys = {
+  all: ["leads"],
+  lists: ["leads", "list"],
+  list: (params) => ["leads", "list", params],
+};

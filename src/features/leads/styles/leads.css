@@ -1,0 +1,133 @@
+/* Lead filters */
+.lead-filters {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.lead-filters .form-select {
+  max-width: 200px;
+}
+
+/* Lead result card */
+.lead-result-card {
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-top: 1rem;
+}
+
+.lead-result-success {
+  background: var(--success-light);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.lead-result-fail {
+  background: var(--warning-light);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.lead-result-header {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.875rem;
+}
+
+.lead-result-icon-success {
+  color: var(--success-dark);
+  flex-shrink: 0;
+}
+
+.lead-result-icon-fail {
+  color: var(--warning-dark);
+  flex-shrink: 0;
+}
+
+.lead-result-title {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  margin: 0;
+}
+
+.lead-result-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lead-result-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--font-base);
+}
+
+.lead-result-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.lead-result-value {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.lead-result-message {
+  font-size: var(--font-base);
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Simulation list */
+.simulation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.simulation-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.simulation-rank {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--primary);
+  flex-shrink: 0;
+  min-width: 32px;
+}
+
+.simulation-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.simulation-client {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.simulation-vertical {
+  font-size: var(--font-sm);
+  color: var(--text-muted);
+}
+
+.simulation-stats {
+  display: flex;
+  gap: 1.25rem;
+  margin-top: 0.25rem;
+}
+
+.simulation-stat {
+  font-size: var(--font-sm);
+  color: var(--text-muted);
+}
