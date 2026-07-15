@@ -5,11 +5,6 @@ export async function getClients() {
   return data.data;
 }
 
-export async function getClientById(id) {
-  const { data } = await api.get(`/clients/${id}`);
-  return data.data;
-}
-
 export async function createClient(payload) {
   const { data } = await api.post("/clients", payload);
   return data.data;

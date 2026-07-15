@@ -5,11 +5,6 @@ export async function getVerticals() {
   return data.data;
 }
 
-export async function getVerticalById(id) {
-  const { data } = await api.get(`/verticals/${id}`);
-  return data.data;
-}
-
 export async function createVertical(payload) {
   const { data } = await api.post("/verticals", payload);
   return data.data;

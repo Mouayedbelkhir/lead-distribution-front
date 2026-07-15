@@ -5,11 +5,6 @@ export async function getDeliveries() {
   return data.data;
 }
 
-export async function getDeliveryById(id) {
-  const { data } = await api.get(`/deliveries/${id}`);
-  return data.data;
-}
-
 export async function createDelivery(payload) {
   const { data } = await api.post("/deliveries", payload);
   return data.data;
